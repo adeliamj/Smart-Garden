@@ -203,21 +203,38 @@
       var tamanTitikKumpulUMMarker = L.marker([-7.963195, 112.617978]).addTo(map);
       tamanTitikKumpulUMMarker.bindPopup("Taman Titik Kumpul UM");
 
+      // Tambahkan event listener untuk menangani klik pada marker
+      tamanTitikKumpulUMMarker.on('click', function () {
+        // Arahkan ke halaman data.html
+        window.location.href = 'data.html';
+      });
+      
       // Marker untuk Taman Sains FMIPA UM
       var tamanSainsFMIPAMarker = L.marker([-7.960928, 112.618124]).addTo(map);
       tamanSainsFMIPAMarker.bindPopup("Taman Sains FMIPA UM");
+
+      // Tambahkan event listener untuk menangani klik pada marker
+      tamanSainsFMIPAMarker.on('click', function () {
+        // Arahkan ke halaman data.html
+        window.location.href = 'data.html';
+      });
 
       // Marker untuk Alun Alun UM
       var alunalunUMMarker = L.marker([-7.963284, 112.619328]).addTo(map);
       alunalunUMMarker.bindPopup("Alun Alun UM");
 
+      // Tambahkan event listener untuk menangani klik pada marker
+      alunalunUMMarker.on('click', function () {
+        // Arahkan ke halaman data.html
+        window.location.href = 'data.html';
+      });
+
       // Marker untuk Taman Ringin FMIPA UM
       var tamanRinginFMIPAMarker = L.marker([-7.959942, 112.618423]).addTo(map);
       tamanRinginFMIPAMarker.bindPopup("Taman Ringin FMIPA UM");
 
-
       // Tambahkan event listener untuk menangani klik pada marker
-      tamanTitikKumpulUMMarker.on('click', function () {
+      tamanRinginFMIPAMarker.on('click', function () {
         // Arahkan ke halaman data.html
         window.location.href = 'data.html';
       });
