@@ -62,10 +62,20 @@
         <div class="container">
             <div class="text-center mx-auto wow fadeInUp" data-wow-delay="0.1s" style="max-width: 500px;">
                 <p class="fs-5 fw-bold text-primary">Sensor</p>
-                <h1 class="display-5 mb-5">Data Rata-Rata <br> Sensor pada Taman ... </h1>
+                <h1 class="display-5 mb-5">Data Rata-Rata <br> Sensor pada Taman <span id="taman-name">...</span></h1>
             </div>
             <div id="map"></div>
-        </div>      
+        </div>
+    </div>
+
+    <script>
+        // Baca nama titik dari localStorage
+        var clickedMarkerName = localStorage.getItem('clickedMarkerName');
+        // Tampilkan nama titik di halaman
+        if (clickedMarkerName) {
+            document.getElementById('taman-name').textContent = clickedMarkerName;
+        }
+    </script>
             
             <div class="row g-4">
                 <div class="col-lg-4 col-md-6 wow fadeInUp" data-wow-delay="0.1s">
