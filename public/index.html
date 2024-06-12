@@ -181,76 +181,79 @@
   <!-- Top Feature End -->
 
 
-  <!-- Service Start -->
-  <div class="container-xxl py-5" id="maps">
-    <div class="container">
+<!-- Service Start -->
+<div class="container-xxl py-5">
+  <div class="container">
       <div class="text-center mx-auto wow fadeInUp" data-wow-delay="0.1s" style="max-width: 500px;">
-        <p class="fs-5 fw-bold text-primary">Peta</p>
-        <h1 class="display-5 mb-5">Taman dan Hutan UM</h1>
+          <p class="fs-5 fw-bold text-primary">Peta</p>
+          <h1 class="display-5 mb-5">Taman dan Hutan UM</h1>
       </div>
       <div id="map" style="height: 500px;"></div>
-    </div>
-
-    <script>
+  </div>
+  
+  <script>
       // Inisialisasi peta
       var map = L.map('map').setView([-7.9558, 112.6145], 15);
 
       L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-        attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+          attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
       }).addTo(map);
 
       // Marker untuk Taman Titik Kumpul UM
       var tamanTitikKumpulUMMarker = L.marker([-7.963195, 112.617978]).addTo(map);
       tamanTitikKumpulUMMarker.bindPopup("Taman Titik Kumpul UM");
+      tamanTitikKumpulUMMarker.bindTooltip("Taman Titik Kumpul UM"); // Tambahkan tooltip
 
       // Tambahkan event listener untuk menangani klik pada marker
       tamanTitikKumpulUMMarker.on('click', function () {
-        // Arahkan ke halaman data.html
-        window.location.href = 'data.html';
+          // Arahkan ke halaman data.html
+          window.location.href = 'data.html';
       });
-      
+
       // Marker untuk Taman Sains FMIPA UM
       var tamanSainsFMIPAMarker = L.marker([-7.960928, 112.618124]).addTo(map);
       tamanSainsFMIPAMarker.bindPopup("Taman Sains FMIPA UM");
+      tamanSainsFMIPAMarker.bindTooltip("Taman Sains FMIPA UM"); // Tambahkan tooltip
 
       // Tambahkan event listener untuk menangani klik pada marker
       tamanSainsFMIPAMarker.on('click', function () {
-        // Arahkan ke halaman data.html
-        window.location.href = 'data.html';
+          // Arahkan ke halaman data.html
+          window.location.href = 'data.html';
       });
 
       // Marker untuk Alun Alun UM
       var alunalunUMMarker = L.marker([-7.963284, 112.619328]).addTo(map);
       alunalunUMMarker.bindPopup("Alun Alun UM");
+      alunalunUMMarker.bindTooltip("Alun Alun UM"); // Tambahkan tooltip
 
       // Tambahkan event listener untuk menangani klik pada marker
       alunalunUMMarker.on('click', function () {
-        // Arahkan ke halaman data.html
-        window.location.href = 'data.html';
+          // Arahkan ke halaman data.html
+          window.location.href = 'data.html';
       });
 
       // Marker untuk Taman Ringin FMIPA UM
       var tamanRinginFMIPAMarker = L.marker([-7.959942, 112.618423]).addTo(map);
       tamanRinginFMIPAMarker.bindPopup("Taman Ringin FMIPA UM");
+      tamanRinginFMIPAMarker.bindTooltip("Taman Ringin FMIPA UM"); // Tambahkan tooltip
 
       // Tambahkan event listener untuk menangani klik pada marker
       tamanRinginFMIPAMarker.on('click', function () {
-        // Arahkan ke halaman data.html
-        window.location.href = 'data.html';
+          // Arahkan ke halaman data.html
+          window.location.href = 'data.html';
       });
 
       var geojsonFeatureCollection = {
-        "type": "FeatureCollection",
-        "features": []
+          "type": "FeatureCollection",
+          "features": []
       };
 
       L.geoJSON(geojsonFeatureCollection).addTo(map);
-    </script>
-
-  </div>
-  </div>
-  <!-- Service End -->
-
+  </script>        
+  
+</div>
+</div>
+<!-- Service End -->
 
 
   <!-- Footer Start -->
