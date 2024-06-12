@@ -33,6 +33,30 @@
 
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" />
     <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
+    <script>
+        // Import the functions you need from the SDKs you need
+        import { initializeApp } from "firebase/app";
+        import { getAnalytics } from "firebase/analytics";
+        // TODO: Add SDKs for Firebase products that you want to use
+        // https://firebase.google.com/docs/web/setup#available-libraries
+
+        // Your web app's Firebase configuration
+        // For Firebase JS SDK v7.20.0 and later, measurementId is optional
+        const firebaseConfig = {
+            apiKey: "AIzaSyB7Qqag_YkLcXvFT137yzmKFXL0tu4K034",
+            authDomain: "smart-garden-de8cb.firebaseapp.com",
+            databaseURL: "https://smart-garden-de8cb-default-rtdb.asia-southeast1.firebasedatabase.app",
+            projectId: "smart-garden-de8cb",
+            storageBucket: "smart-garden-de8cb.appspot.com",
+            messagingSenderId: "386939527958",
+            appId: "1:386939527958:web:ff76f9bec6320eae8be637",
+            measurementId: "G-M5LG61PZ8F"
+        };
+
+        // Initialize Firebase
+        const app = initializeApp(firebaseConfig);
+        const analytics = getAnalytics(app);
+    </script>
 </head>
 
 <body>
