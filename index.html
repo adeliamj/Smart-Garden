@@ -157,35 +157,54 @@
     <!-- Top Feature End -->
 
 
-    <!-- Service Start -->
-    <div class="container-xxl py-5">
-        <div class="container">
-            <div class="text-center mx-auto wow fadeInUp" data-wow-delay="0.1s" style="max-width: 500px;">
-                <p class="fs-5 fw-bold text-primary">Peta</p>
-                <h1 class="display-5 mb-5">Taman dan Hutan UM</h1>
-            </div>
-            <div id="map"></div>
+  <!-- Service Start -->
+<div class="container-xxl py-5">
+    <div class="container">
+        <div class="text-center mx-auto wow fadeInUp" data-wow-delay="0.1s" style="max-width: 500px;">
+            <p class="fs-5 fw-bold text-primary">Peta</p>
+            <h1 class="display-5 mb-5">Taman dan Hutan UM</h1>
         </div>
-        
-            <script>
-                // Inisialisasi peta
-                var map = L.map('map').setView([-7.9666, 112.6251], 15);
-        
-                L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-                    attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-                }).addTo(map);
-        
-                var geojsonFeatureCollection = {
-                    "type": "FeatureCollection",
-                    "features": []
-                };
-        
-                L.geoJSON(geojsonFeatureCollection).addTo(map);
-            </script>        
-            
-        </div>
+        <div id="map" style="height: 500px;"></div>
     </div>
-    <!-- Service End -->
+    
+    <script>
+        // Inisialisasi peta
+        var map = L.map('map').setView([-7.9558, 112.6145], 15);
+
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+        }).addTo(map);
+
+        // Marker untuk Taman Titik Kumpul UM
+        var alunalunMarker = L.marker([-7.963195, 112.617978]).addTo(map); 
+
+        // Marker untuk Taman Sains FMIPA UM
+        var alunalunMarker = L.marker([-7.960928, 112.618124]).addTo(map);  
+        
+        // Marker untuk Alun Alun UM
+        var alunalunMarker = L.marker([-7.963284, 112.619328]).addTo(map); 
+
+         // Marker untuk Taman Ringin FMIPA UM
+         var alunalunMarker = L.marker([-7.959942, 112.618423]).addTo(map);  
+
+        // Tambahkan event listener untuk menangani klik pada marker
+        alunalunMarker.on('click', function() {
+            // Arahkan ke halaman data.html
+            window.location.href = 'data.html';
+        });
+
+        var geojsonFeatureCollection = {
+            "type": "FeatureCollection",
+            "features": []
+        };
+
+        L.geoJSON(geojsonFeatureCollection).addTo(map);
+    </script>        
+    
+</div>
+</div>
+<!-- Service End -->
+
 
 
     <!-- Footer Start -->
