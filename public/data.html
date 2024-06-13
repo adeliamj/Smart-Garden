@@ -39,6 +39,13 @@
     <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-auth.js"></script>
 
     <script>
+        var clickedMarkerName = localStorage.getItem('clickedMarkerName');
+        if (clickedMarkerName) {
+            document.getElementById('taman-name').textContent = clickedMarkerName;
+        }
+    </script>
+
+    <script>
         // Your web app's Firebase configuration
         const firebaseConfig = {
             apiKey: "AIzaSyB7Qqag_YkLcXvFT137yzmKFXL0tu4K034",
@@ -51,72 +58,45 @@
             measurementId: "G-M5LG61PZ8F"
         };
 
-        // Initialize Firebase
-        firebase.initializeApp(firebaseConfig);
-        const database = firebase.database();
+        // Inisialisasi Firebase dan ambil data
+    function fetchDataAndUpdateHTML() {
+        var dbRef = firebase.database().ref();
+        dbRef.once('value').then((snapshot) => {
+            var data = snapshot.val();
+            // Pastikan data ada dan sesuai
+            if (data) {
+                document.getElementById('temperature').textContent = `${data.temperature} derajat Celcius`;
+                document.getElementById('soilMoisture').textContent = `${data.averageSoilMoisture}`;
+                document.getElementById('humidity').textContent = `${data.humidity} %`;
+                document.getElementById('ldr').textContent = `${data.ldrValue}`;
 
-        // Reference to your entire Firebase database
-        const dbRef = database.ref();
+                var avgTemperature = data.temperature;
+                var avgSoilMoisture = data.averageSoilMoisture;
+                var avgHumidity = data.humidity;
+                var avgLdr = data.ldrValue;
 
-        // Fetch the data from the database
-        dbRef.on('value', (snapshot) => {
-            const data = snapshot.val();
-            displayData(data);
-        });
+                var avgOverall = (avgTemperature + avgSoilMoisture + avgHumidity + avgLdr) / 4;
 
-        // Function to display the data in HTML
-        function displayData(data) {
-            const dataDiv = document.getElementById('data');
-            dataDiv.innerHTML = '';  // Clear previous data
+                var waterShortage = avgSoilMoisture < 30; // Contoh nilai ambang untuk kelembaban tanah
 
-            for (const key in data) {
-                if (data.hasOwnProperty(key)) {
-                    const item = document.createElement('div');
-                    item.innerHTML = `<strong>${key}:</strong> ${JSON.stringify(data[key])}`;
-                    dataDiv.appendChild(item);
-                }
+                document.getElementById('averageData').textContent = `Rata-rata seluruh data adalah ${avgOverall.toFixed(2)}`;
+                document.getElementById('waterStatus').textContent = waterShortage ? "Taman mengalami kekurangan air." : "Taman tidak mengalami kekurangan air.";
+
+                // Hilangkan spinner setelah data diambil
+                document.getElementById('spinner').classList.remove('show');
+            } else {
+                console.error("Tidak ada data yang tersedia di Firebase.");
             }
-        }
-
-        function fetchDataAndUpdateHTML() {
-            var dbRef = firebase.database().ref();
-            dbRef.once('value').then((snapshot) => {
-                var data = snapshot.val();
-                console.log(data); // Debugging: Check if data is fetched
-
-                // Ensure data is not null and has expected structure
-                if (data) {
-                    document.getElementById('temperature').textContent = `${data.temperature} derajat Celcius`;
-                    document.getElementById('soilMoisture').textContent = `${data.averageSoilMoisture}`;
-                    document.getElementById('humidity').textContent = `${data.humidity} %`;
-                    document.getElementById('ldr').textContent = `${data.ldrValue}`;
-
-                    var avgTemperature = data.temperature;
-                    var avgSoilMoisture = data.averageSoilMoisture;
-                    var avgHumidity = data.humidity;
-                    var avgLdr = data.ldrValue;
-
-                    var avgOverall = (avgTemperature + avgSoilMoisture + avgHumidity + avgLdr) / 4;
-
-                    var waterShortage = avgSoilMoisture < 30; // Example threshold value for soil moisture
-
-                    document.getElementById('averageData').textContent = `Rata-rata seluruh data adalah ${avgOverall.toFixed(2)}`;
-                    document.getElementById('waterStatus').textContent = waterShortage ? "Taman mengalami kekurangan air." : "Taman tidak mengalami kekurangan air.";
-
-                    // Hide spinner after fetching data
-                    document.getElementById('spinner').classList.remove('show');
-                } else {
-                    console.error("No data available in Firebase.");
-                }
-            }).catch((error) => {
-                console.error("Error fetching data: ", error); // Debugging: Log any errors
-                // Optionally handle errors, e.g., display an error message
-            });
-        }
-
-        document.addEventListener('DOMContentLoaded', () => {
-            fetchDataAndUpdateHTML();
+        }).catch((error) => {
+            console.error("Error dalam mengambil data: ", error);
+            // Penanganan error opsional, misalnya menampilkan pesan error
         });
+    }
+
+    // Panggil fungsi saat DOM sudah dimuat
+    document.addEventListener('DOMContentLoaded', () => {
+        fetchDataAndUpdateHTML();
+    });
     </script>
 </head>
 
