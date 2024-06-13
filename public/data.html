@@ -1,6 +1,5 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="utf-8">
     <title>Gardener - Gardening Website Template</title>
@@ -36,7 +35,6 @@
     <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-database.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-auth.js"></script>
 
-
     <script>
         // Your web app's Firebase configuration
         const firebaseConfig = {
@@ -59,29 +57,30 @@
                 var data = snapshot.val();
                 console.log(data); // Debugging: Check if data is fetched
 
-                // Update individual sensor data
-                document.getElementById('temperature').textContent = `${data.temperature} derajat Celcius`;
-                document.getElementById('soilMoisture').textContent = `${data.averageSoilMoisture}`;
-                document.getElementById('humidity').textContent = `${data.humidity} %`;
-                document.getElementById('ldr').textContent = `${data.ldrValue}`;
+                // Ensure data is not null and has expected structure
+                if (data) {
+                    document.getElementById('temperature').textContent = `${data.temperature} derajat Celcius`;
+                    document.getElementById('soilMoisture').textContent = `${data.averageSoilMoisture}`;
+                    document.getElementById('humidity').textContent = `${data.humidity} %`;
+                    document.getElementById('ldr').textContent = `${data.ldrValue}`;
 
-                // Calculate the average of all values
-                var avgTemperature = data.temperature;
-                var avgSoilMoisture = data.averageSoilMoisture;
-                var avgHumidity = data.humidity;
-                var avgLdr = data.ldrValue;
+                    var avgTemperature = data.temperature;
+                    var avgSoilMoisture = data.averageSoilMoisture;
+                    var avgHumidity = data.humidity;
+                    var avgLdr = data.ldrValue;
 
-                var avgOverall = (avgTemperature + avgSoilMoisture + avgHumidity + avgLdr) / 4;
+                    var avgOverall = (avgTemperature + avgSoilMoisture + avgHumidity + avgLdr) / 4;
 
-                // Determine if the garden is experiencing a water shortage
-                var waterShortage = avgSoilMoisture < 30; // Example threshold value for soil moisture
+                    var waterShortage = avgSoilMoisture < 30; // Example threshold value for soil moisture
 
-                // Update the overall average and water shortage status
-                document.getElementById('averageData').textContent = `Rata-rata seluruh data adalah ${avgOverall.toFixed(2)}`;
-                document.getElementById('waterStatus').textContent = waterShortage ? "Taman mengalami kekurangan air." : "Taman tidak mengalami kekurangan air.";
+                    document.getElementById('averageData').textContent = `Rata-rata seluruh data adalah ${avgOverall.toFixed(2)}`;
+                    document.getElementById('waterStatus').textContent = waterShortage ? "Taman mengalami kekurangan air." : "Taman tidak mengalami kekurangan air.";
 
-                // Hide spinner after fetching data
-                document.getElementById('spinner').classList.remove('show');
+                    // Hide spinner after fetching data
+                    document.getElementById('spinner').classList.remove('show');
+                } else {
+                    console.error("No data available in Firebase.");
+                }
             }).catch((error) => {
                 console.error("Error fetching data: ", error); // Debugging: Log any errors
                 // Optionally handle errors, e.g., display an error message
@@ -92,8 +91,6 @@
             fetchDataAndUpdateHTML();
         });
     </script>
-
-
 </head>
 
 <body>
@@ -107,7 +104,6 @@
     <!-- Navbar Start -->
     <nav class="navbar navbar-expand-lg bg-white navbar-light sticky-top p-0">
         <a href="index.html" class="navbar-brand d-flex align-items-center px-4 px-lg-5">
-            <!-- <img class="w-10" src="img/logo-um.png" alt="Image"> -->
             <h1 class="m-0">UMHijau</h1>
         </a>
         <button type="button" class="navbar-toggler me-4" data-bs-toggle="collapse" data-bs-target="#navbarCollapse">
@@ -258,7 +254,6 @@
     </div>
     <!-- Copyright End -->
 
-
     <!-- Back to Top -->
     <a href="#" class="btn btn-lg btn-primary btn-lg-square rounded-circle back-to-top"><i
             class="bi bi-arrow-up"></i></a>
@@ -278,5 +273,4 @@
     <!-- Template Javascript -->
     <script src="js/main.js"></script>
 </body>
-
 </html>
