@@ -13,6 +13,65 @@
   <link rel="stylesheet" href="lib/lightbox/css/lightbox.min.css">
   <link rel="stylesheet" href="css/bootstrap.min.css">
   <link rel="stylesheet" href="css/style.css">
+
+  <!-- Firebase SDK -->
+  <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-database.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-auth.js"></script>
+
+  <script>
+    // Your web app's Firebase configuration
+    const firebaseConfig = {
+      apiKey: "AIzaSyB7Qqag_YkLcXvFT137yzmKFXL0tu4K034",
+      authDomain: "smart-garden-de8cb.firebaseapp.com",
+      databaseURL: "https://smart-garden-de8cb-default-rtdb.asia-southeast1.firebasedatabase.app",
+      projectId: "smart-garden-de8cb",
+      storageBucket: "smart-garden-de8cb.appspot.com",
+      messagingSenderId: "386939527958",
+      appId: "1:386939527958:web:ff76f9bec6320eae8be637",
+      measurementId: "G-M5LG61PZ8F"
+    };
+
+    // Initialize Firebase
+    firebase.initializeApp(firebaseConfig);
+
+    // Function to handle login
+    function login() {
+      const email = document.getElementById('email').value;
+      const password = document.getElementById('password').value;
+      firebase.auth().signInWithEmailAndPassword(email, password)
+        .then((userCredential) => {
+          document.getElementById('loginForm').style.display = 'none';
+          document.getElementById('logoutButton').style.display = 'block';
+          fetchDataAndUpdateHTML();
+        })
+        .catch((error) => {
+          console.error("Error logging in: ", error);
+        });
+    }
+
+    // Function to handle logout
+    function logout() {
+      firebase.auth().signOut().then(() => {
+        document.getElementById('loginForm').style.display = 'block';
+        document.getElementById('logoutButton').style.display = 'none';
+      }).catch((error) => {
+        console.error("Error logging out: ", error);
+      });
+    }
+
+    // Check for user login state
+    firebase.auth().onAuthStateChanged((user) => {
+      if (user) {
+        document.getElementById('loginForm').style.display = 'none';
+        document.getElementById('logoutButton').style.display = 'block';
+        fetchDataAndUpdateHTML();
+      } else {
+        document.getElementById('loginForm').style.display = 'block';
+        document.getElementById('logoutButton').style.display = 'none';
+      }
+    });
+  </script>
   <style>
     body {
       display: flex;
