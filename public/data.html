@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="utf-8">
     <title>Gardener - Gardening Website Template</title>
@@ -13,7 +14,9 @@
     <!-- Google Web Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Jost:wght@500;600;700&family=Open+Sans:wght@400;500&display=swap" rel="stylesheet">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Jost:wght@500;600;700&family=Open+Sans:wght@400;500&display=swap"
+        rel="stylesheet">
 
     <!-- Icon Font Stylesheet -->
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.10.0/css/all.min.css" rel="stylesheet">
@@ -50,6 +53,30 @@
 
         // Initialize Firebase
         firebase.initializeApp(firebaseConfig);
+        const database = firebase.database();
+
+        // Reference to your entire Firebase database
+        const dbRef = database.ref();
+
+        // Fetch the data from the database
+        dbRef.on('value', (snapshot) => {
+            const data = snapshot.val();
+            displayData(data);
+        });
+
+        // Function to display the data in HTML
+        function displayData(data) {
+            const dataDiv = document.getElementById('data');
+            dataDiv.innerHTML = '';  // Clear previous data
+
+            for (const key in data) {
+                if (data.hasOwnProperty(key)) {
+                    const item = document.createElement('div');
+                    item.innerHTML = `<strong>${key}:</strong> ${JSON.stringify(data[key])}`;
+                    dataDiv.appendChild(item);
+                }
+            }
+        }
 
         function fetchDataAndUpdateHTML() {
             var dbRef = firebase.database().ref();
@@ -152,7 +179,8 @@
                             <img class="img-fluid" src="img/icon/icon-3.png" alt="Icon">
                         </div>
                         <h4 class="mb-3">Data Sensor Suhu</h4>
-                        <p class="mb-4">Suhu rata-rata pada Taman adalah <span id="temperature">...</span> derajat Celcius</p>
+                        <p class="mb-4">Suhu rata-rata pada Taman adalah <span id="temperature">...</span> derajat
+                            Celcius</p>
                     </div>
                 </div>
             </div>
@@ -166,8 +194,8 @@
                             <img class="img-fluid" src="img/icon/icon-5.png" alt="Icon">
                         </div>
                         <h4 class="mb-3">Data Sensor Kelembaban tanah</h4>
-                        <p class="mb-4">Kelembaban tanah rata-rata pada Taman adalah <span
-                                id="soilMoisture">...</span></p>
+                        <p class="mb-4">Kelembaban tanah rata-rata pada Taman adalah <span id="soilMoisture">...</span>
+                        </p>
                     </div>
                 </div>
             </div>
@@ -273,4 +301,5 @@
     <!-- Template Javascript -->
     <script src="js/main.js"></script>
 </body>
+
 </html>
