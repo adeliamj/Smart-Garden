@@ -47,7 +47,7 @@
 
     <script>
         // Your web app's Firebase configuration
-        const firebaseConfig = {
+        var firebaseConfig = {
             apiKey: "AIzaSyB7Qqag_YkLcXvFT137yzmKFXL0tu4K034",
             authDomain: "smart-garden-de8cb.firebaseapp.com",
             databaseURL: "https://smart-garden-de8cb-default-rtdb.asia-southeast1.firebasedatabase.app",
@@ -58,45 +58,48 @@
             measurementId: "G-M5LG61PZ8F"
         };
 
-        // Inisialisasi Firebase dan ambil data
-    function fetchDataAndUpdateHTML() {
-        var dbRef = firebase.database().ref();
-        dbRef.once('value').then((snapshot) => {
-            var data = snapshot.val();
-            // Pastikan data ada dan sesuai
-            if (data) {
-                document.getElementById('temperature').textContent = `${data.temperature} derajat Celcius`;
-                document.getElementById('soilMoisture').textContent = `${data.averageSoilMoisture}`;
-                document.getElementById('humidity').textContent = `${data.humidity} %`;
-                document.getElementById('ldr').textContent = `${data.ldrValue}`;
+        // Initialize Firebase
+        firebase.initializeApp(firebaseConfig);
 
-                var avgTemperature = data.temperature;
-                var avgSoilMoisture = data.averageSoilMoisture;
-                var avgHumidity = data.humidity;
-                var avgLdr = data.ldrValue;
+        function fetchDataAndUpdateHTML() {
+            var dbRef = firebase.database().ref();
+            dbRef.once('value').then((snapshot) => {
+                var data = snapshot.val();
+                // Pastikan data ada dan sesuai
+                if (data) {
+                    document.getElementById('temperature').textContent = `${data.temperature} derajat Celcius`;
+                    document.getElementById('soilMoisture').textContent = `${data.averageSoilMoisture}`;
+                    document.getElementById('humidity').textContent = `${data.humidity} %`;
+                    document.getElementById('ldr').textContent = `${data.ldrValue}`;
 
-                var avgOverall = (avgTemperature + avgSoilMoisture + avgHumidity + avgLdr) / 4;
+                    var avgTemperature = data.temperature;
+                    var avgSoilMoisture = data.averageSoilMoisture;
+                    var avgHumidity = data.humidity;
+                    var avgLdr = data.ldrValue;
 
-                var waterShortage = avgSoilMoisture < 30; // Contoh nilai ambang untuk kelembaban tanah
+                    var avgOverall = (avgTemperature + avgSoilMoisture + avgHumidity + avgLdr) / 4;
 
-                document.getElementById('averageData').textContent = `Rata-rata seluruh data adalah ${avgOverall.toFixed(2)}`;
-                document.getElementById('waterStatus').textContent = waterShortage ? "Taman mengalami kekurangan air." : "Taman tidak mengalami kekurangan air.";
+                    var waterShortage = avgSoilMoisture < 30; // Contoh nilai ambang untuk kelembaban tanah
 
-                // Hilangkan spinner setelah data diambil
-                document.getElementById('spinner').classList.remove('show');
-            } else {
-                console.error("Tidak ada data yang tersedia di Firebase.");
-            }
-        }).catch((error) => {
-            console.error("Error dalam mengambil data: ", error);
-            // Penanganan error opsional, misalnya menampilkan pesan error
+                    document.getElementById('averageData').textContent = `Rata-rata seluruh data adalah ${avgOverall.toFixed(2)}`;
+                    document.getElementById('waterStatus').textContent = waterShortage ? "Taman mengalami kekurangan air." : "Taman tidak mengalami kekurangan air.";
+
+                    // Hilangkan spinner dan tampilkan konten setelah data diambil
+                    document.getElementById('spinner').classList.remove('show');
+                    document.getElementById('content').style.display = 'block';
+                } else {
+                    console.error("Tidak ada data yang tersedia di Firebase.");
+                }
+            }).catch((error) => {
+                console.error("Error dalam mengambil data: ", error);
+                // Penanganan error opsional, misalnya menampilkan pesan error
+            });
+        }
+
+        // Panggil fungsi saat DOM sudah dimuat
+        document.addEventListener('DOMContentLoaded', () => {
+            fetchDataAndUpdateHTML();
         });
-    }
-
-    // Panggil fungsi saat DOM sudah dimuat
-    document.addEventListener('DOMContentLoaded', () => {
-        fetchDataAndUpdateHTML();
-    });
     </script>
 </head>
 
@@ -159,8 +162,7 @@
                             <img class="img-fluid" src="img/icon/icon-3.png" alt="Icon">
                         </div>
                         <h4 class="mb-3">Data Sensor Suhu</h4>
-                        <p class="mb-4">Suhu rata-rata pada Taman adalah <span id="temperature">...</span> derajat
-                            Celcius</p>
+                        <p class="mb-4">Suhu rata-rata pada Taman adalah <span id="temperature">...</span> </p>
                     </div>
                 </div>
             </div>
@@ -189,7 +191,7 @@
                             <img class="img-fluid" src="img/icon/icon-6.png" alt="Icon">
                         </div>
                         <h4 class="mb-3">Data Sensor Udara</h4>
-                        <p class="mb-4">Udara rata-rata pada Taman adalah <span id="humidity">...</span> %
+                        <p class="mb-4">Udara rata-rata pada Taman adalah <span id="humidity">...</span>
                         </p>
                     </div>
                 </div>
