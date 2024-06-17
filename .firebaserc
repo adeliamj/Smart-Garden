@@ -1,5 +1,9 @@
 {
   "projects": {
-    "default": "smart-garden-de8cb"
-  }
+    "default": "smart-garden-de8cb",
+    "smart-garden": "smart-garden-de8cb"
+  },
+  "targets": {},
+  "etags": {},
+  "dataconnectEmulatorConfig": {}
 }

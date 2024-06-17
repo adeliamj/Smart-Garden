@@ -44,18 +44,17 @@
     <script>
         // Initialize Firebase
         var firebaseConfig = {
-            apiKey: "AIzaSyB7Qqag_YkLcXvFT137yzmKFXL0tu4K034",
-            authDomain: "smart-garden-de8cb.firebaseapp.com",
-            projectId: "smart-garden-de8cb",
-            storageBucket: "smart-garden-de8cb.appspot.com",
-            messagingSenderId: "386939527958",
-            appId: "1:386939527958:web:ff76f9bec6320eae8be637",
-            measurementId: "G-M5LG61PZ8F"
+            apiKey: "your-api-key",
+            authDomain: "your-auth-domain",
+            projectId: "your-project-id",
+            storageBucket: "your-storage-bucket",
+            messagingSenderId: "your-messaging-sender-id",
+            appId: "your-app-id",
+            measurementId: "your-measurement-id"
         };
         firebase.initializeApp(firebaseConfig);
     
         function setWateringSchedule() {
-            // Get the input values
             var date = document.getElementById('date').value;
             var time = document.getElementById('time').value;
             var duration = document.getElementById('duration').value;
@@ -67,10 +66,8 @@
     
             var [hour, minute] = time.split(':');
     
-            // Call the Cloud Function to schedule watering
-            var functions = firebase.functions();
-            var scheduleWatering = functions.httpsCallable('scheduleWatering');
-    
+            // Panggil Firebase Function
+            var scheduleWatering = firebase.functions().httpsCallable('scheduleWatering');
             scheduleWatering({ date: date, hour: hour, minute: minute, duration: duration }).then((result) => {
                 console.log("Watering scheduled.");
                 document.getElementById('scheduleStatus').textContent = `Watering scheduled on ${date} at ${time} for ${duration} minutes.`;
@@ -79,6 +76,10 @@
                 document.getElementById('scheduleStatus').textContent = "Error scheduling watering.";
             });
         }
+    
+        document.addEventListener('DOMContentLoaded', () => {
+            document.getElementById('setScheduleButton').addEventListener('click', setWateringSchedule);
+        });
     
         document.addEventListener('DOMContentLoaded', () => {
             document.getElementById('setScheduleButton').addEventListener('click', setWateringSchedule);
