@@ -18,13 +18,17 @@
       ".read": "true",
       ".write": "true"
     },
-    "pumpStatus": {
+    "soilMoisturePercentage": {
       ".read": "true",
       ".write": "true"
-    },
-    "pumpActive": {
-      ".read": "true",
-      ".write": "true"
-    }
+  },
+  "pumpStatus": {
+    ".read": "true",
+    ".write": "true"
+  },
+  "pumpActive": {
+    ".read": "true",
+    ".write": "true"
   }
+}
 }

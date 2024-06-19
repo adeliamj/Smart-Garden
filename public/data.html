@@ -8,32 +8,25 @@
     <meta content="" name="keywords">
     <meta content="" name="description">
 
-    <!-- Favicon -->
     <link href="/img/favicon.ico" rel="icon">
 
-    <!-- Google Web Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link
         href="https://fonts.googleapis.com/css2?family=Jost:wght@500;600;700&family=Open+Sans:wght@400;500&display=swap"
         rel="stylesheet">
 
-    <!-- Icon Font Stylesheet -->
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.10.0/css/all.min.css" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.4.1/font/bootstrap-icons.css" rel="stylesheet">
 
-    <!-- Libraries Stylesheet -->
     <link href="lib/animate/animate.min.css" rel="stylesheet">
     <link href="lib/owlcarousel/assets/owl.carousel.min.css" rel="stylesheet">
     <link href="lib/lightbox/css/lightbox.min.css" rel="stylesheet">
 
-    <!-- Customized Bootstrap Stylesheet -->
     <link href="css/bootstrap.min.css" rel="stylesheet">
 
-    <!-- Template Stylesheet -->
     <link href="css/style.css" rel="stylesheet">
 
-    <!-- Firebase SDK -->
     <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-database.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-auth.js"></script>
@@ -46,7 +39,6 @@
     </script>
 
     <script>
-        // Your web app's Firebase configuration
         var firebaseConfig = {
             apiKey: "AIzaSyB7Qqag_YkLcXvFT137yzmKFXL0tu4K034",
             authDomain: "smart-garden-de8cb.firebaseapp.com",
@@ -58,28 +50,25 @@
             measurementId: "G-M5LG61PZ8F"
         };
 
-        // Initialize Firebase
         firebase.initializeApp(firebaseConfig);
 
         function updateHTML(data) {
             document.getElementById('temperature').textContent = `${data.temperature} derajat Celcius`;
-            document.getElementById('soilMoisture').textContent = `${data.averageSoilMoisture}`;
+            document.getElementById('soilMoisture').textContent = `${data.soilMoisturePercentage} persen`;
             document.getElementById('humidity').textContent = `${data.humidity} persen`;
             document.getElementById('ldr').textContent = `${data.ldrValue}`;
 
             var avgTemperature = data.temperature;
-            var avgSoilMoisture = data.averageSoilMoisture;
+            var soilMoisturePercentage = data.soilMoisturePercentage;
+            var averageSoilMoisture = data.averageSoilMoisture;
             var avgHumidity = data.humidity;
             var avgLdr = data.ldrValue;
 
-            var avgOverall = (avgTemperature + avgSoilMoisture + avgHumidity + avgLdr) / 4;
 
-            var waterShortage = avgSoilMoisture < 30; // Example threshold value for soil moisture
+            var waterShortage = averageSoilMoisture > 3000; 
 
-            document.getElementById('averageData').textContent = `Rata-rata seluruh data adalah ${avgOverall.toFixed(2)}`;
-            document.getElementById('waterStatus').textContent = waterShortage ? "Taman mengalami kekurangan air." : "Taman tidak mengalami kekurangan air.";
+            document.getElementById('waterStatus').textContent = waterShortage ? "taman mengalami kekurangan air" : "Taman tidak mengalami kekurangan air.";
 
-            // Hide spinner and show content after data is fetched
             document.getElementById('spinner').classList.remove('show');
             document.getElementById('content').style.display = 'block';
         }
@@ -95,7 +84,6 @@
                 }
             }, (error) => {
                 console.error("Error dalam mengambil data: ", error);
-                // Optional error handling, e.g., displaying an error message
             });
         });
     </script>
@@ -103,16 +91,12 @@
 </head>
 
 <body>
-    <!-- Spinner Start -->
     <div id="spinner"
         class="show bg-white position-fixed translate-middle w-100 vh-100 top-50 start-50 d-flex align-items-center justify-content-center">
         <div class="spinner-border text-primary" role="status" style="width: 3rem; height: 3rem;"></div>
     </div>
-    <!-- Spinner End -->
-
-    <!-- Navbar Start -->
     <nav class="navbar navbar-expand-lg bg-white navbar-light sticky-top p-0">
-        <a href="index.html" class="navbar-brand d-flex align-items-center px-4 px-lg-5">
+        <a href="home.html" class="navbar-brand d-flex align-items-center px-4 px-lg-5">
             <h1 class="m-0">UMHijau</h1>
         </a>
         <button type="button" class="navbar-toggler me-4" data-bs-toggle="collapse" data-bs-target="#navbarCollapse">
@@ -120,15 +104,13 @@
         </button>
         <div class="collapse navbar-collapse" id="navbarCollapse">
             <div class="navbar-nav ms-auto p-4 p-lg-0">
-                <a href="index.html" class="nav-item nav-link">Home</a>
-                <!-- <a href="#maps" class="nav-item nav-link">Maps</a> -->
-                <!-- <a href="jadwal.html" class="nav-item nav-link">Jadwal</a> -->
+                <a href="home.html" class="nav-item nav-link">Home</a>
+                <a href="jadwal.html" class="nav-item nav-link">Jadwal</a>
             </div>
-            <a href="admin.html" class="btn btn-primary py-4 px-lg-4 rounded-0 d-none d-lg-block">Login<i
-                    class="fa fa-arrow-right ms-3"></i></a>
+            <a href="/" class="btn btn-primary py-4 px-lg-4 rounded-0 d-none d-lg-block">Logout<i
+                class="fa fa-arrow-right ms-3"></i></a>
         </div>
     </nav>
-    <!-- Navbar End -->
 
     <div class="container-xxl py-5">
         <div class="container">
@@ -141,15 +123,12 @@
     </div>
 
     <script>
-        // Baca nama titik dari localStorage
         var clickedMarkerName = localStorage.getItem('clickedMarkerName');
-        // Tampilkan nama titik di halaman
         if (clickedMarkerName) {
             document.getElementById('taman-name').textContent = clickedMarkerName;
         }
     </script>
 
-    <!-- Service Start -->
     <div class="container py-4">
         <div class="row g-4">
             <div class="col-lg-4 col-md-6 wow fadeInUp" data-wow-delay="0.1s">
@@ -206,21 +185,20 @@
                             <img class="img-fluid" src="img/icon/icon-8.png" alt="Icon">
                         </div>
                         <h4 class="mb-3">Data Sensor Cahaya</h4>
-                        <p class="mb-4">Cahaya rata-rata pada Taman adalah <span id="ldr">...</span></p>
+                        <p class="mb-4">Cahaya rata-rata pada Taman tersebut adalah <span id="ldr">...</span></p>
                     </div>
                 </div>
             </div>
             <div class="col-lg-4 col-md-6 wow fadeInUp" data-wow-delay="0.3s">
                 <div class="service-item rounded d-flex h-100">
                     <div class="service-img rounded">
-                        <img class="img-fluid" src="img/service-7.jpg" alt="">
+                        <img class="img-fluid" src="img/service-4.jpg" alt="">
                     </div>
                     <div class="service-text rounded p-5">
                         <div class="btn-square rounded-circle mx-auto mb-3">
                             <img class="img-fluid" src="img/icon/icon-7.png" alt="Icon">
                         </div>
-                        <h4 class="mb-3">Rata-Rata:</h4>
-                        <p class="mb-2"><span id="averageData">...</span></p>
+                        <h4 class="mb-3">Hasil Akhirnya dapat disimpulkan Bahwa:</h4>
                         <p class="mb-2"><span id="waterStatus">...</span></p>
                     </div>
                 </div>
@@ -230,11 +208,10 @@
     </div>
 
     <div class="container-xxl py-5" style="align-items: center;">
-        <a href="" class="btn btn-primary py-sm-3">Siram</a>
+        <button type="submit" class="btn btn-primary py-sm-3 px-sm-5 rounded-pill">Siram</button>
     </div>
 
     <script>
-        // Function to trigger watering
         function triggerWatering() {
             firebase.database().ref("/triggerWatering").set(true)
                 .then(() => {
@@ -245,16 +222,12 @@
                     console.error("Error triggering watering: ", error);
                 });
         }
-
-        // Add event listener to the "Siram" button
         document.querySelector(".btn-primary").addEventListener("click", function (event) {
             event.preventDefault();
             triggerWatering();
         });
     </script>
 
-
-    <!-- Footer Start -->
     <div class="container-fluid bg-dark text-light footer mt-5 py-5 wow fadeIn" data-wow-delay="0.1s">
         <div class="container py-5">
             <div class="row g-5">
@@ -268,9 +241,6 @@
             </div>
         </div>
     </div>
-    <!-- Footer End -->
-
-    <!-- Copyright Start -->
     <div class="container-fluid copyright py-4">
         <div class="container">
             <div class="row">
@@ -280,13 +250,9 @@
             </div>
         </div>
     </div>
-    <!-- Copyright End -->
-
-    <!-- Back to Top -->
     <a href="#" class="btn btn-lg btn-primary btn-lg-square rounded-circle back-to-top"><i
             class="bi bi-arrow-up"></i></a>
 
-    <!-- JavaScript Libraries -->
     <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/js/bootstrap.bundle.min.js"></script>
     <script src="lib/wow/wow.min.js"></script>
@@ -297,8 +263,7 @@
     <script src="lib/parallax/parallax.min.js"></script>
     <script src="lib/isotope/isotope.pkgd.min.js"></script>
     <script src="lib/lightbox/js/lightbox.min.js"></script>
-
-    <!-- Template Javascript -->
+    
     <script src="js/main.js"></script>
 </body>
 

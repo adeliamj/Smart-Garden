@@ -35,42 +35,43 @@
     // Initialize Firebase
     firebase.initializeApp(firebaseConfig);
 
-    // Function to handle login
-    function login() {
-      const email = document.getElementById('email').value;
-      const password = document.getElementById('password').value;
-      firebase.auth().signInWithEmailAndPassword(email, password)
-        .then((userCredential) => {
-          document.getElementById('loginForm').style.display = 'none';
-          document.getElementById('logoutButton').style.display = 'block';
-          fetchDataAndUpdateHTML();
-        })
-        .catch((error) => {
-          console.error("Error logging in: ", error);
-        });
-    }
+    // Dummy admin credentials (username: Pak Kebun, password: Mahasiswadisiram)
+    const adminCredentials = {
+      username: 'Pak Kebun',
+      password: 'Mahasiswadisiram'
+    };
 
-    // Function to handle logout
-    function logout() {
-      firebase.auth().signOut().then(() => {
-        document.getElementById('loginForm').style.display = 'block';
-        document.getElementById('logoutButton').style.display = 'none';
-      }).catch((error) => {
-        console.error("Error logging out: ", error);
+    // Store dummy admin credentials in Firebase Realtime Database
+    function storeAdminCredentials() {
+      const hashedPassword = btoa(adminCredentials.password); // Simple base64 encoding for demonstration
+      firebase.database().ref('admin/credentials').set({
+        username: adminCredentials.username,
+        password: hashedPassword
       });
     }
 
-    // Check for user login state
-    firebase.auth().onAuthStateChanged((user) => {
-      if (user) {
-        document.getElementById('loginForm').style.display = 'none';
-        document.getElementById('logoutButton').style.display = 'block';
-        fetchDataAndUpdateHTML();
-      } else {
-        document.getElementById('loginForm').style.display = 'block';
-        document.getElementById('logoutButton').style.display = 'none';
-      }
-    });
+    storeAdminCredentials(); // Call this function to store admin credentials once
+
+    // Function to handle login
+    function login(event) {
+      event.preventDefault();
+      const username = document.getElementById('username').value;
+      const password = document.getElementById('password').value;
+      const hashedPassword = btoa(password);
+
+      firebase.database().ref('admin/credentials').once('value').then((snapshot) => {
+        const credentials = snapshot.val();
+        if (credentials.username === username && credentials.password === hashedPassword) {
+          // Redirect to the index.html page upon successful login
+          // alert('Login successful!');
+          window.location.href = 'index.html'; // Redirect to index.html
+        } else {
+          document.getElementById('errorMessage').style.display = 'block';
+        }
+      }).catch((error) => {
+        console.error("Error fetching admin credentials: ", error);
+      });
+    }
   </script>
   <style>
     body {
@@ -110,7 +111,7 @@
 <body>
   <div class="login-container">
     <h2>Login</h2>
-    <form id="loginForm">
+    <form id="loginForm" onsubmit="login(event)">
       <div class="form-group">
         <label for="username">Username</label>
         <input type="text" class="form-control" id="username" required>
@@ -135,26 +136,6 @@
   <script src="lib/isotope/isotope.pkgd.min.js"></script>
   <script src="lib/lightbox/js/lightbox.min.js"></script>
   <script src="js/main.js"></script>
-  <script>
-    document.getElementById('loginForm').addEventListener('submit', function (e) {
-      e.preventDefault();
-
-      // Dummy admin credentials
-      const adminUsername = 'Pak Kebun';
-      const adminPassword = 'Mahasiswadisiram';
-
-      const username = document.getElementById('username').value;
-      const password = document.getElementById('password').value;
-
-      if (username === adminUsername && password === adminPassword) {
-        // Redirect to the index.html page upon successful login
-        alert('Login successful!');
-        window.location.href = 'index.html'; // Redirect to index.html
-      } else {
-        document.getElementById('errorMessage').style.display = 'block';
-      }
-    });
-  </script>
 </body>
 
 </html>

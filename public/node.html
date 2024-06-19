@@ -50,14 +50,17 @@
         // Function to submit coordinates
         function submitCoordinates(event) {
             event.preventDefault();
+            var nameloc= document.getElementById('nameloc').value;
             var latitude = document.getElementById('latitude').value;
             var longitude = document.getElementById('longitude').value;
 
             firebase.database().ref('coordinates').push({
+                nameloc: nameloc,
                 latitude: latitude,
                 longitude: longitude
             }).then(() => {
-                alert("Coordinates have been submitted!");
+                window.location.href = 'home.html';
+            //     alert("Coordinates have been submitted!");
             }).catch((error) => {
                 console.error("Error submitting coordinates: ", error);
             });
@@ -68,7 +71,7 @@
 <body>
     <!-- Navbar Start -->
     <nav class="navbar navbar-expand-lg bg-white navbar-light sticky-top p-0">
-        <a href="index.html" class="navbar-brand d-flex align-items-center px-4 px-lg-5">
+        <a href="home.html" class="navbar-brand d-flex align-items-center px-4 px-lg-5">
             <h1 class="m-0">UMHijau</h1>
         </a>
         <button type="button" class="navbar-toggler me-4" data-bs-toggle="collapse" data-bs-target="#navbarCollapse">
@@ -76,9 +79,10 @@
         </button>
         <div class="collapse navbar-collapse" id="navbarCollapse">
             <div class="navbar-nav ms-auto p-4 p-lg-0">
-                <a href="index.html" class="nav-item nav-link">Home</a>
+                <a href="home.html" class="nav-item nav-link">Home</a>
             </div>
-            <a href="admin.html" class="btn btn-primary py-4 px-lg-4 rounded-0 d-none d-lg-block">Login<i class="fa fa-arrow-right ms-3"></i></a>
+            <a href="/" class="btn btn-primary py-4 px-lg-4 rounded-0 d-none d-lg-block">Logout<i
+                class="fa fa-arrow-right ms-3"></i></a>
         </div>
     </nav>
     <!-- Navbar End -->
@@ -90,8 +94,8 @@
             </div>
             <form onsubmit="submitCoordinates(event)">
                 <div class="mb-3">
-                    <label for="latitude" class="form-label">Nama</label>
-                    <input type="text" class="form-control" id="latitude" required>
+                    <label for="nameloc" class="form-label">Nama</label>
+                    <input type="text" class="form-control" id="nameloc" required>
                 </div>
                 <div class="mb-3">
                     <label for="latitude" class="form-label">Latitude</label>
@@ -101,7 +105,8 @@
                     <label for="longitude" class="form-label">Longitude</label>
                     <input type="text" class="form-control" id="longitude" required>
                 </div>
-                <button type="submit" class="btn btn-primary">Submit</button>
+                <button type="submit" class="btn btn-primary py-sm-3 px-sm-5 rounded-pill">Submit</button>
+                <!-- <button type="submit" class="btn btn-primary">Submit</button> -->
             </form>
         </div>
     </div>
