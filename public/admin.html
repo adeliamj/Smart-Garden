@@ -14,13 +14,11 @@
   <link rel="stylesheet" href="css/bootstrap.min.css">
   <link rel="stylesheet" href="css/style.css">
 
-  <!-- Firebase SDK -->
   <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
   <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-database.js"></script>
   <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-auth.js"></script>
 
   <script>
-    // Your web app's Firebase configuration
     const firebaseConfig = {
       apiKey: "AIzaSyB7Qqag_YkLcXvFT137yzmKFXL0tu4K034",
       authDomain: "smart-garden-de8cb.firebaseapp.com",
@@ -32,27 +30,23 @@
       measurementId: "G-M5LG61PZ8F"
     };
 
-    // Initialize Firebase
     firebase.initializeApp(firebaseConfig);
 
-    // Dummy admin credentials (username: Pak Kebun, password: Mahasiswadisiram)
     const adminCredentials = {
       username: 'Pak Kebun',
       password: 'Mahasiswadisiram'
     };
 
-    // Store dummy admin credentials in Firebase Realtime Database
     function storeAdminCredentials() {
-      const hashedPassword = btoa(adminCredentials.password); // Simple base64 encoding for demonstration
+      const hashedPassword = btoa(adminCredentials.password); 
       firebase.database().ref('admin/credentials').set({
         username: adminCredentials.username,
         password: hashedPassword
       });
     }
 
-    storeAdminCredentials(); // Call this function to store admin credentials once
+    storeAdminCredentials(); 
 
-    // Function to handle login
     function login(event) {
       event.preventDefault();
       const username = document.getElementById('username').value;
@@ -62,9 +56,7 @@
       firebase.database().ref('admin/credentials').once('value').then((snapshot) => {
         const credentials = snapshot.val();
         if (credentials.username === username && credentials.password === hashedPassword) {
-          // Redirect to the index.html page upon successful login
-          // alert('Login successful!');
-          window.location.href = 'index.html'; // Redirect to index.html
+          window.location.href = 'index.html'; 
         } else {
           document.getElementById('errorMessage').style.display = 'block';
         }

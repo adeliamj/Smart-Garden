@@ -1,18 +1,13 @@
-// Complete Project Details at: https://RandomNerdTutorials.com/
-
-// Database Paths
 var dataFloatPath = 'test/float';
 var dataIntPath = 'test/int';
 
-// Get a database reference 
 const databaseFloat = database.ref(dataFloatPath);
 const databaseInt = database.ref(dataIntPath);
 
-// Variables to save database current values
+
 var floatReading;
 var intReading;
 
-// Attach an asynchronous callback to read the data
 databaseFloat.on('value', (snapshot) => {
     floatReading = snapshot.val();
     console.log(floatReading);
