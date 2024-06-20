@@ -1,3 +1,4 @@
+<!-- CHALLENCE PENJADWALAN-->
 <!DOCTYPE html>
 <html lang="en">
 
@@ -26,6 +27,7 @@
     <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-auth.js"></script>
 
     <script>
+        // Konfigurasi Firebase
         var firebaseConfig = {
             apiKey: "AIzaSyB7Qqag_YkLcXvFT137yzmKFXL0tu4K034",
             authDomain: "smart-garden-de8cb.firebaseapp.com",
@@ -37,32 +39,40 @@
             measurementId: "G-M5LG61PZ8F"
         };
 
+        // Inisialisasi Firebase
         firebase.initializeApp(firebaseConfig);
 
+        // Fungsi untuk menangani pengiriman jadwal baru
         function submitSchedule(event) {
             event.preventDefault();
+            // Mengambil nilai dari input date, time, dan duration
             var date = document.getElementById('date').value;
             var time = document.getElementById('time').value;
             var duration = document.getElementById('duration').value;
 
+            // Menyimpan jadwal baru ke dalam Firebase Database di path 'schedules'
             firebase.database().ref('schedules').push({
                 date: date,
                 time: time,
                 duration: duration
             }).then(() => {
+                // Jika penyimpanan berhasil, mengubah teks status dan memperbarui tabel
                 document.getElementById('scheduleStatus').innerText = "Schedule has been set!";
-                fetchSchedules(); // Refresh the table
+                fetchSchedules(); // Memuat ulang tabel jadwal
             }).catch((error) => {
+                // Menangani kesalahan jika gagal menyimpan jadwal
                 console.error("Error setting schedule: ", error);
             });
         }
 
+        // Fungsi untuk mengambil dan menampilkan daftar jadwal dari Firebase Database
         function fetchSchedules() {
             firebase.database().ref('schedules').once('value').then((snapshot) => {
                 var schedules = snapshot.val();
                 var tableBody = document.getElementById('scheduleTableBody');
                 tableBody.innerHTML = '';
 
+                // Iterasi melalui setiap jadwal dan membangun baris tabel untuk setiap jadwal
                 for (var id in schedules) {
                     var schedule = schedules[id];
                     var row = `<tr>
@@ -76,16 +86,18 @@
             });
         }
 
+        // Fungsi untuk menghapus jadwal berdasarkan ID dari Firebase Database
         function deleteSchedule(id) {
             firebase.database().ref('schedules/' + id).remove().then(() => {
-                fetchSchedules(); // Refresh the table
+                fetchSchedules();
             }).catch((error) => {
                 console.error("Error deleting schedule: ", error);
             });
         }
 
+        // Saat halaman selesai dimuat, panggil fungsi fetchSchedules untuk memuat tabel jadwal
         window.onload = function () {
-            fetchSchedules(); // Fetch schedules when the page loads
+            fetchSchedules();
         }
     </script>
 </head>
@@ -136,7 +148,6 @@
             </div>
         </div>
 
-        <!-- Schedule Table -->
         <div class="container mt-5">
             <h2 class="text-center">Scheduled Watering Times</h2>
             <table class="table table-bordered">
@@ -149,7 +160,6 @@
                     </tr>
                 </thead>
                 <tbody id="scheduleTableBody">
-                    <!-- Schedule rows will be inserted here by JavaScript -->
                 </tbody>
             </table>
         </div>

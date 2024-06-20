@@ -122,6 +122,7 @@
     </div>
 
     <script>
+      // Konfigurasi Firebase
       var firebaseConfig = {
         apiKey: "AIzaSyB7Qqag_YkLcXvFT137yzmKFXL0tu4K034",
         authDomain: "smart-garden-de8cb.firebaseapp.com",
@@ -133,6 +134,7 @@
         measurementId: "G-M5LG61PZ8F"
       };
 
+      // Inisialisasi Firebase
       firebase.initializeApp(firebaseConfig);
     </script>
 
@@ -140,25 +142,37 @@
 
     <script>
       document.addEventListener('DOMContentLoaded', function () {
-        var map = L.map('map').setView([-7.9558, 112.6145], 15);
+        var map = L.map('map').setView([-7.9558, 112.6145], 15); // Membuat peta Leaflet dengan ID map, memusatkan tampilan ke koordinat tertentu, dengan zoom level 15
 
+        // Menambahkan layer peta dari OpenStreetMap ke dalam peta Leaflet
         L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
           attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
         }).addTo(map);
 
+        // Fungsi untuk menambahkan marker dari data Firebase ke peta Leaflet
         function addMarkersFromFirebase() {
           var coordinatesRef = firebase.database().ref('coordinates');
+          // Mengambil data  dari coordinates di Firebase Database
           coordinatesRef.once('value', function (snapshot) {
+            // Iterasi melalui setiap child dari snapshot
             snapshot.forEach(function (childSnapshot) {
+               // Mendapatkan nilai dari childSnapshot
               var childData = childSnapshot.val();
+
+              // Mendapatkan latitude dan longitude dari childData dan mengonversinya ke float
               var latitude = parseFloat(childData.latitude);
               var longitude = parseFloat(childData.longitude);
+
+              // Mendapatkan nameloc dari childData
               var nameloc = childData.nameloc;
 
+              // Membuat marker pada koordinat latitude dan longitude, menambahkannya ke peta
               var marker = L.marker([latitude, longitude]).addTo(map);
+              // Mengaitkan popup dengan nameloc ke marker
               marker.bindPopup(nameloc); 
-
+              // Menangani klik pada marker
               marker.on('click', function () {
+                // Menyimpan nama lokasi yang diklik di localStorage
                 localStorage.setItem('clickedMarkerName', nameloc);
                 window.location.href = 'data.html';
               });
@@ -166,6 +180,7 @@
           });
         }
 
+        // Memanggil fungsi untuk menambahkan marker dari Firebase ke peta Leaflet
         addMarkersFromFirebase();
       });
     </script>
@@ -211,10 +226,14 @@
   <script src="js/main.js"></script>
 
   <script>
+    // Menunggu hingga dokumen HTML selesai dimuat sebelum menjalankan kode JavaScript
     document.addEventListener('DOMContentLoaded', function () {
+      // Mengambil elemen dengan id load dari dokumen HTML
       const loadEl = document.querySelector('#load');
       try {
+        // Mencoba untuk mendapatkan instance Firebase app
         let app = firebase.app();
+        // Memfilter fitur-fitur Firebase yang tersedia dalam app
         let features = [
           'auth',
           'database',
@@ -226,17 +245,26 @@
           'remoteConfig',
           'performance',
         ].filter(feature => typeof app[feature] === 'function');
+        
+        // Mengubah teks konten dari elemen loadEl dengan informasi fitur Firebase yang dimuat
         loadEl.textContent = `Firebase SDK loaded with ${features.join(', ')}`;
       } catch (e) {
+        // Menangani kesalahan jika gagal mendapatkan instance Firebase app
         console.error(e);
         loadEl.textContent = 'Error loading the Firebase SDK, check the console.';
       }
 
+      // Mengambil elemen button untuk logout dengan id logoutButton
       const logoutButton = document.getElementById('logoutButton');
+
+      // Menambahkan event listener untuk klik pada tombol logout
       logoutButton.addEventListener('click', function () {
+        // Memanggil fungsi signOut() dari Firebase Authentication
         firebase.auth().signOut().then(() => {
+          // Mengarahkan pengguna kembali ke halaman utama setelah logout berhasil
           window.location.href = '/';
         }).catch((error) => {
+          // Menangani kesalahan jika terjadi saat proses sign out
           console.error('Error during sign out:', error);
         });
       });

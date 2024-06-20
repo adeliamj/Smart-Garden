@@ -1,3 +1,4 @@
+<!-- CHALLENCE JIKA JENIS BEDA-BEDA -->
 <!DOCTYPE html>
 <html lang="en">
 
@@ -31,14 +32,8 @@
     <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-database.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-auth.js"></script>
 
-    <!-- <script>
-        var clickedMarkerName = localStorage.getItem('clickedMarkerName');
-        if (clickedMarkerName) {
-            document.getElementById('taman-name').textContent = clickedMarkerName;
-        }
-    </script>
-
     <script>
+        // Konfigurasi Firebase
         var firebaseConfig = {
             apiKey: "AIzaSyB7Qqag_YkLcXvFT137yzmKFXL0tu4K034",
             authDomain: "smart-garden-de8cb.firebaseapp.com",
@@ -50,88 +45,15 @@
             measurementId: "G-M5LG61PZ8F"
         };
 
+        // Inisialisasi Firebase
         firebase.initializeApp(firebaseConfig);
 
         function updateHTML(data) {
-            const {
-                temperature,
-                soilMoisturePercentage,
-                humidity,
-                ldrValue,
-                plantType
-            } = data;
-
-            document.getElementById('temperature').textContent = `${temperature} derajat Celcius`;
-            document.getElementById('soilMoisturePercentage').textContent = `${soilMoisturePercentage} persen`;
-            document.getElementById('humidity').textContent = `${humidity} persen`;
-            document.getElementById('ldr').textContent = `${ldrValue}`;
-
-            let waterShortage = false;
-
-            switch (plantType) {
-                case "xerofit":
-                    waterShortage = soilMoisturePercentage < 40;
-                    break;
-                case "hidrofit":
-                    waterShortage = soilMoisturePercentage < 75;
-                    break;
-                case "higrofit":
-                    waterShortage = soilMoisturePercentage < 70;
-                    break;
-                case "tropofit":
-                    waterShortage = soilMoisturePercentage < 80;
-                    break;
-                case "mesofit":
-                    waterShortage = soilMoisturePercentage < 80;
-                    break;
-                default:
-                    console.error("Jenis tanaman tidak diketahui:", plantType);
-                    break;
-            }
-
-            console.log(`Water Shortage for ${plantType}: ${waterShortage}`);
-
-            document.getElementById('waterStatus').textContent = waterShortage ? "Taman mengalami kekurangan air" : "Taman tidak mengalami kekurangan air";
-
-            document.getElementById('spinner').classList.remove('show');
-            document.getElementById('content').style.display = 'block';
-        }
-
-        document.addEventListener('DOMContentLoaded', () => {
-            var dbRef = firebase.database().ref();
-            dbRef.on('value', (snapshot) => {
-                var data = snapshot.val();
-                if (data) {
-                    updateHTML(data);
-                } else {
-                    console.error("Tidak ada data yang tersedia di Firebase.");
-                }
-            }, (error) => {
-                console.error("Error dalam mengambil data: ", error);
-            });
-        });
-    </script> -->
-
-    <script>
-        var firebaseConfig = {
-            apiKey: "AIzaSyB7Qqag_YkLcXvFT137yzmKFXL0tu4K034",
-            authDomain: "smart-garden-de8cb.firebaseapp.com",
-            databaseURL: "https://smart-garden-de8cb-default-rtdb.asia-southeast1.firebasedatabase.app",
-            projectId: "smart-garden-de8cb",
-            storageBucket: "smart-garden-de8cb.appspot.com",
-            messagingSenderId: "386939527958",
-            appId: "1:386939527958:web:ff76f9bec6320eae8be637",
-            measurementId: "G-M5LG61PZ8F"
-        };
-
-        firebase.initializeApp(firebaseConfig);
-
-        function updateHTML(data) {
-            // Get clickedMarkerName from localStorage
+            // Mendapatkan nama marker yang diklik dari localStorage
             var clickedMarkerName = localStorage.getItem('clickedMarkerName');
 
-            // Find data for the selected garden based on clickedMarkerName
             var selectedData = null;
+            // Iterasi melalui data koordinat untuk mencari data yang sesuai dengan nama marker yang diklik
             for (const key in data.coordinates) {
                 if (data.coordinates.hasOwnProperty(key)) {
                     if (data.coordinates[key].nameloc === clickedMarkerName) {
@@ -141,11 +63,13 @@
                 }
             }
 
+            // Jika data tidak ditemukan untuk nama marker yang diklik, tampilkan pesan kesalahan
             if (!selectedData) {
                 console.error(`Data untuk ${clickedMarkerName} tidak ditemukan.`);
                 return;
             }
 
+            // Mendestrukturisasi data terpilih
             const {
                 temperature,
                 soilMoisturePercentage,
@@ -154,14 +78,16 @@
                 plantType
             } = selectedData;
 
+            // Memperbarui elemen HTML dengan nilai data yang sesuai
             document.getElementById('temperature').textContent = `${temperature} derajat Celcius`;
             document.getElementById('soilMoisturePercentage').textContent = `${soilMoisturePercentage} persen`;
             document.getElementById('humidity').textContent = `${humidity} persen`;
             document.getElementById('ldr').textContent = `${ldrValue}`;
             document.getElementById('plantType').textContent = `${plantType}`;
 
+            // Variabel untuk menentukan apakah terjadi kekurangan air berdasarkan jenis tanaman
             let waterShortage = false;
-
+            // Memproses kondisi kekurangan air berdasarkan jenis tanaman
             switch (plantType) {
                 case "xerofit":
                     waterShortage = soilMoisturePercentage < 40;
@@ -183,19 +109,26 @@
                     break;
             }
 
+            // Log ke konsol status kekurangan air untuk jenis tanaman yang dipilih
             console.log(`Water Shortage for ${plantType}: ${waterShortage}`);
 
+            // Memperbarui elemen HTML dengan status kekurangan air
             document.getElementById('waterStatus').textContent = waterShortage ? "mengalami kekurangan air" : "tidak mengalami kekurangan air";
 
+            // Menghilangkan spinner dan menampilkan konten setelah proses pembaruan selesai
             document.getElementById('spinner').classList.remove('show');
             document.getElementById('content').style.display = 'block';
         }
 
+        // Menunggu hingga dokumen HTML selesai dimuat sebelum menjalankan kode JavaScript
         document.addEventListener('DOMContentLoaded', () => {
+            // Mendapatkan referensi database Firebase
             var dbRef = firebase.database().ref();
+            // Perubahan Realtime value di database Firebase
             dbRef.on('value', (snapshot) => {
                 var data = snapshot.val();
                 if (data) {
+                    // Jika data tersedia, panggil fungsi updateHTML dengan data yang diterima
                     updateHTML(data);
                 } else {
                     console.error("Tidak ada data yang tersedia di Firebase.");
@@ -240,12 +173,6 @@
         </div>
     </div>
 
-    <script>
-        var clickedMarkerName = localStorage.getItem('clickedMarkerName');
-        if (clickedMarkerName) {
-            document.getElementById('taman-name').textContent = clickedMarkerName;
-        }
-    </script>
 
     <div class="container py-4">
         <div class="row g-4">
@@ -325,27 +252,6 @@
         </div>
     </div>
     </div>
-
-    <div class="container-xxl py-5" style="align-items: center;">
-        <!-- <button type="submit" class="btn btn-primary py-sm-3 px-sm-5 rounded-pill">Siram</button> -->
-    </div>
-
-    <script>
-        function triggerWatering() {
-            firebase.database().ref("/triggerWatering").set(true)
-                .then(() => {
-                    console.log("Watering triggered");
-                    alert("Watering has been triggered!");
-                })
-                .catch((error) => {
-                    console.error("Error triggering watering: ", error);
-                });
-        }
-        document.querySelector(".btn-primary").addEventListener("click", function (event) {
-            event.preventDefault();
-            triggerWatering();
-        });
-    </script>
 
     <div class="container-fluid bg-dark text-light footer mt-5 py-5 wow fadeIn" data-wow-delay="0.1s">
         <div class="container py-5">

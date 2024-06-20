@@ -19,6 +19,7 @@
   <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-auth.js"></script>
 
   <script>
+    // Konfigurasi Firebase
     const firebaseConfig = {
       apiKey: "AIzaSyB7Qqag_YkLcXvFT137yzmKFXL0tu4K034",
       authDomain: "smart-garden-de8cb.firebaseapp.com",
@@ -30,33 +31,40 @@
       measurementId: "G-M5LG61PZ8F"
     };
 
+    // Inisialisasi Firebase
     firebase.initializeApp(firebaseConfig);
 
+    // Kredensial admin yang akan disimpan di Database
     const adminCredentials = {
       username: 'AdminKebun',
       password: 'adminkebun'
     };
 
+    // Fungsi untuk menyimpan kredensial admin ke Firebase Database
     function storeAdminCredentials() {
-      const hashedPassword = btoa(adminCredentials.password); 
+      const hashedPassword = btoa(adminCredentials.password);
+      // Menyimpan kredensial admin di path 'admin/credentials'
       firebase.database().ref('admin/credentials').set({
         username: adminCredentials.username,
         password: hashedPassword
       });
     }
 
-    storeAdminCredentials(); 
+    // Memanggil fungsi untuk menyimpan kredensial admin saat halaman dimuat
+    storeAdminCredentials();
 
+    // Fungsi untuk menangani proses login admin
     function login(event) {
-      event.preventDefault();
+      event.preventDefault(); // Mencegah perilaku default saat submit formulir
       const username = document.getElementById('username').value;
       const password = document.getElementById('password').value;
-      const hashedPassword = btoa(password);
+      const hashedPassword = btoa(password); // Mengenkripsi password
 
+      // Mengambil kredensial admin dari Firebase Database
       firebase.database().ref('admin/credentials').once('value').then((snapshot) => {
         const credentials = snapshot.val();
         if (credentials.username === username && credentials.password === hashedPassword) {
-          window.location.href = 'home.html'; 
+          window.location.href = 'home.html';
         } else {
           document.getElementById('errorMessage').style.display = 'block';
         }
