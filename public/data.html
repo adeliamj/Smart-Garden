@@ -158,6 +158,7 @@
             document.getElementById('soilMoisturePercentage').textContent = `${soilMoisturePercentage} persen`;
             document.getElementById('humidity').textContent = `${humidity} persen`;
             document.getElementById('ldr').textContent = `${ldrValue}`;
+            document.getElementById('plantType').textContent = `${plantType}`;
 
             let waterShortage = false;
 
@@ -184,7 +185,7 @@
 
             console.log(`Water Shortage for ${plantType}: ${waterShortage}`);
 
-            document.getElementById('waterStatus').textContent = waterShortage ? "Taman mengalami kekurangan air" : "Taman tidak mengalami kekurangan air";
+            document.getElementById('waterStatus').textContent = waterShortage ? "mengalami kekurangan air" : "tidak mengalami kekurangan air";
 
             document.getElementById('spinner').classList.remove('show');
             document.getElementById('content').style.display = 'block';
@@ -316,7 +317,7 @@
                         <div class="btn-square rounded-circle mx-auto mb-3">
                             <img class="img-fluid" src="img/icon/icon-7.png" alt="Icon">
                         </div>
-                        <h4 class="mb-3">Hasil Akhirnya dapat disimpulkan Bahwa:</h4>
+                        <h4 class="mb-3">Hasilnya dapat disimpulkan Bahwa Tanaman Jenis: <span id="plantType">.</h4>
                         <p class="mb-2"><span id="waterStatus">...</span></p>
                     </div>
                 </div>
