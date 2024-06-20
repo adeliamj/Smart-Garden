@@ -41,14 +41,16 @@
 
         function submitCoordinates(event) {
             event.preventDefault();
-            var nameloc= document.getElementById('nameloc').value;
+            var nameloc = document.getElementById('nameloc').value;
             var latitude = document.getElementById('latitude').value;
             var longitude = document.getElementById('longitude').value;
+            var plantType = document.getElementById('plantType').value;
 
             firebase.database().ref('coordinates').push({
                 nameloc: nameloc,
                 latitude: latitude,
-                longitude: longitude
+                longitude: longitude,
+                plantType: plantType
             }).then(() => {
                 window.location.href = 'home.html';
             }).catch((error) => {
@@ -92,6 +94,17 @@
                 <div class="mb-3">
                     <label for="longitude" class="form-label">Longitude</label>
                     <input type="text" class="form-control" id="longitude" required>
+                </div>
+                <div class="mb-3">
+                    <label for="plantType" class="form-label">Jenis Tanaman</label>
+                    <select class="form-control" id="plantType" required>
+                        <option disabled selected>Pilih Jenis Tanaman</option>
+                        <option value="hodrofit">Hodrofit</option>
+                        <option value="higrofit">Higrofit</option>
+                        <option value="tropofit">Tropofit</option>
+                        <option value="xerofit">Xerofit</option>
+                        <option value="mesofit">Mesofit</option>
+                    </select>
                 </div>
                 <button type="submit" class="btn btn-primary py-sm-3 px-sm-5 rounded-pill">Submit</button>
             </form>
