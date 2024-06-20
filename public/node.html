@@ -3,7 +3,7 @@
 
 <head>
     <meta charset="utf-8">
-    <title>Input Coordinates - Gardening Website</title>
+    <title>Input Coordinates - UMHijau</title>
     <meta content="width=device-width, initial-scale=1.0" name="viewport">
     <meta content="" name="keywords">
     <meta content="" name="description">
@@ -39,6 +39,21 @@
 
         firebase.initializeApp(firebaseConfig);
 
+        let sensorData = {};
+
+        firebase.database().ref().on('value', (snapshot) => {
+            const data = snapshot.val();
+            sensorData = {
+                soilMoisture1: data.soilMoisture1,
+                soilMoisture2: data.soilMoisture2,
+                soilMoisture3: data.soilMoisture3,
+                soilMoisturePercentage: data.soilMoisturePercentage,
+                temperature: data.temperature, // Make sure you have temperature data in your Firebase
+                humidity: data.humidity,
+                ldrValue: data.ldrValue
+            };
+        });
+
         function submitCoordinates(event) {
             event.preventDefault();
             var nameloc = document.getElementById('nameloc').value;
@@ -50,7 +65,14 @@
                 nameloc: nameloc,
                 latitude: latitude,
                 longitude: longitude,
-                plantType: plantType
+                plantType: plantType,
+                temperature: sensorData.temperature,
+                humidity: sensorData.humidity,
+                ldrValue: sensorData.ldrValue,
+                soilMoisturePercentage: sensorData.soilMoisturePercentage,
+                soilMoisture1: sensorData.soilMoisture1,
+                soilMoisture2: sensorData.soilMoisture2,
+                soilMoisture3: sensorData.soilMoisture3
             }).then(() => {
                 window.location.href = 'home.html';
             }).catch((error) => {
@@ -99,7 +121,7 @@
                     <label for="plantType" class="form-label">Jenis Tanaman</label>
                     <select class="form-control" id="plantType" required>
                         <option disabled selected>Pilih Jenis Tanaman</option>
-                        <option value="hodrofit">Hodrofit</option>
+                        <option value="hidrofit">Hidrofit</option>
                         <option value="higrofit">Higrofit</option>
                         <option value="tropofit">Tropofit</option>
                         <option value="xerofit">Xerofit</option>
@@ -146,7 +168,6 @@
     <script src="lib/parallax/parallax.min.js"></script>
     <script src="lib/isotope/isotope.pkgd.min.js"></script>
     <script src="lib/lightbox/js/lightbox.min.js"></script>
-
     <script src="js/main.js"></script>
 </body>
 

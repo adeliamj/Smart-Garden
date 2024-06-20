@@ -3,7 +3,7 @@
 
 <head>
     <meta charset="utf-8">
-    <title>Gardener - Gardening Website Template</title>
+    <title>Data | UMHijau</title>
     <meta content="width=device-width, initial-scale=1.0" name="viewport">
     <meta content="" name="keywords">
     <meta content="" name="description">
@@ -148,13 +148,10 @@
 
             const {
                 temperature,
+                soilMoisturePercentage,
                 humidity,
-                ldrValue
-            } = data;
-
-            const {
-                plantType,
-                soilMoisturePercentage
+                ldrValue,
+                plantType
             } = selectedData;
 
             document.getElementById('temperature').textContent = `${temperature} derajat Celcius`;
@@ -207,7 +204,6 @@
             });
         });
     </script>
-
 
 </head>
 
