@@ -39,19 +39,19 @@
             measurementId: "G-M5LG61PZ8F"
         };
 
-        // Initialize Firebase
+        // Inisialisasi Firebase
         firebase.initializeApp(firebaseConfig);
 
-        // Function to submit a new schedule
+        // Fungsi untuk mengirim jadwal baru
         function submitSchedule(event) {
             event.preventDefault();
             var date = document.getElementById('date').value;
             var time = document.getElementById('time').value;
             var duration = document.getElementById('duration').value;
-            var locationId = document.getElementById('location').value; // Get selected location ID
-            var locationName = document.getElementById('location').options[document.getElementById('location').selectedIndex].text; // Get selected location name
+            var locationId = document.getElementById('location').value; // Mendapatkan ID lokasi yang dipilih
+            var locationName = document.getElementById('location').options[document.getElementById('location').selectedIndex].text; // Mendapatkan nama lokasi yang dipilih
 
-            // Save schedule under 'coordinates/locationId/schedule'
+            // Simpan jadwal di bawah 'coordinates/locationId/schedule'
             firebase.database().ref('coordinates/' + locationId + '/schedule').push({
                 date: date,
                 time: time,
@@ -70,16 +70,16 @@
                 var tableBody = document.getElementById('scheduleTableBody');
                 tableBody.innerHTML = '';
 
-                // Iterate through each location
+                // Iterasi melalui setiap lokasi
                 for (var locationKey in locations) {
                     var locationData = locations[locationKey];
-                    var locationName = locationData.nameloc; // Get the location name
+                    var locationName = locationData.nameloc; // Mendapatkan nama lokasi
 
-                    // Check if this location has schedules
+                    // Memeriksa apakah lokasi ini memiliki jadwal
                     if (locationData.schedule) {
                         var schedules = locationData.schedule;
 
-                        // Iterate through each schedule and build table rows
+                        // Iterasi melalui setiap jadwal dan bangun baris tabel
                         for (var scheduleKey in schedules) {
                             var schedule = schedules[scheduleKey];
                             var row = `<tr>
@@ -96,7 +96,7 @@
             });
         }
 
-        // Function to delete a schedule based on location and ID
+        // Fungsi untuk menghapus jadwal berdasarkan lokasi dan ID
         function deleteSchedule(location, id) {
             firebase.database().ref('coordinates/' + location + '/schedule/' + id).remove().then(() => {
                 fetchSchedulesFromDatabase();
@@ -105,30 +105,30 @@
             });
         }
 
-        // Function to fetch locations and populate dropdown
+        // Fungsi untuk mengambil lokasi dan mempopulasikan dropdown
         function fetchLocations() {
             firebase.database().ref('coordinates').once('value').then((snapshot) => {
                 var locations = snapshot.val();
                 var locationDropdown = document.getElementById('location');
                 locationDropdown.innerHTML = '';
 
-                // Iterate through each location and build <option> for each
+                // Iterasi melalui setiap lokasi dan bangun elemen <option> untuk setiap lokasi
                 for (var locationId in locations) {
-                    var locationName = locations[locationId].nameloc; // Get the location name
+                    var locationName = locations[locationId].nameloc; // Mendapatkan nama lokasi
 
-                    // Create option element with location name and ID as value
+                    // Membuat elemen option dengan nama lokasi dan ID sebagai nilai
                     var option = document.createElement('option');
                     option.value = locationId;
                     option.textContent = locationName;
                     locationDropdown.appendChild(option);
                 }
 
-                // Fetch schedules after populating dropdown
+                // Mengambil jadwal setelah mempopulasikan dropdown
                 fetchSchedulesFromDatabase();
             });
         }
 
-        // Call fetchLocations when the page loads
+        // Memanggil fetchLocations saat halaman dimuat
         window.onload = function () {
             fetchLocations();
         };
